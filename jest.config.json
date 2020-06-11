@@ -1,0 +1,6 @@
+{
+  "transformIgnorePatterns": [
+    "<rootDir>.*(node_modules).*$"
+  ],
+  "testMatch": ["<rootDir>/**/*.spec.js"]
+}
