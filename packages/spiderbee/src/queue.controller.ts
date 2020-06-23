@@ -1,8 +1,10 @@
+import debug from 'debug'
 import { EventEmitter } from 'events'
 import { Config } from 'spiderbee-types'
 import { SpiderEmitter } from './spider.emitter.interface'
 
 export class QueueController extends EventEmitter {
+  private readonly debug = debug('spiderbee:queue')
 
   private queue: { id: string, config: Config, emitter: SpiderEmitter, done: () => void }[] = []
   private running: { id: string, config: Config, emitter: SpiderEmitter, done: () => void }[] = []
@@ -19,6 +21,7 @@ export class QueueController extends EventEmitter {
           job.emitter.on('error', () => {
             this.running = this.running.filter(x => x.id !== job.id)
           })
+          this.debug(`starting job ${job.id}`)
           this.running.push(job)
           this.emit('start', job)
         }
@@ -28,6 +31,7 @@ export class QueueController extends EventEmitter {
 
   async enqueue(id: string, config: Config, emitter: SpiderEmitter) {
     await new Promise<void>(resolve => {
+      this.debug(`enqueued new job ${id}`)
       this.queue.push({ id, config, emitter, done: resolve })
     })
   }
