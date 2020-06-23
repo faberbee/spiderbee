@@ -4,20 +4,20 @@ import { SpiderEmitter } from './spider.emitter.interface'
 
 export class QueueController extends EventEmitter {
 
-  private readonly running: { id: string, config: Config, emitter: SpiderEmitter, done: () => void }[] = []
-  private readonly queue: { id: string, config: Config, emitter: SpiderEmitter, done: () => void }[] = []
+  private queue: { id: string, config: Config, emitter: SpiderEmitter, done: () => void }[] = []
+  private running: { id: string, config: Config, emitter: SpiderEmitter, done: () => void }[] = []
 
   constructor(concurrency: number) {
     super()
     setInterval(() => {
       if (this.running.length <= concurrency / 2) {
-        const job = this.queue.pop()
+        const job = this.queue.shift()
         if (job) {
           job.emitter.on('end', () => {
-            this.running.filter(x => x.id !== job.id)
+            this.running = this.running.filter(x => x.id !== job.id)
           })
           job.emitter.on('error', () => {
-            this.running.filter(x => x.id !== job.id)
+            this.running = this.running.filter(x => x.id !== job.id)
           })
           this.running.push(job)
           this.emit('start', job)
