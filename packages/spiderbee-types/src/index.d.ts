@@ -63,6 +63,7 @@ export interface EachAction {
   type: 'each'
   selector: string
   resultKey: string
+  infinite?: boolean
   actions: EachActionTypeAction[]
 }
 

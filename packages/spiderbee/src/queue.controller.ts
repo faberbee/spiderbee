@@ -21,7 +21,7 @@ export class QueueController extends EventEmitter {
           job.emitter.on('error', () => {
             this.running = this.running.filter(x => x.id !== job.id)
           })
-          this.debug(`starting job ${job.id}`)
+          this.debug('starting job %s', job.id)
           this.running.push(job)
           this.emit('start', job)
         }
@@ -31,7 +31,7 @@ export class QueueController extends EventEmitter {
 
   async enqueue(id: string, config: Config, emitter: SpiderEmitter) {
     await new Promise<void>(resolve => {
-      this.debug(`enqueued new job ${id}`)
+      this.debug('enqueued new job %s', id)
       this.queue.push({ id, config, emitter, done: resolve })
     })
   }

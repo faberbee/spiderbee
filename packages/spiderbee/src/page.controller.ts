@@ -38,7 +38,7 @@ export class PageController {
     return this.page.url()
   }
 
-  async navigate(url: string) {
+  async navigate(url: string): Promise<void> {
     this.debug('navigating to %s', url)
     await this.page.goto(url, { waitUntil: 'networkidle2' })
     this.url = this.page.url()
@@ -49,7 +49,7 @@ export class PageController {
     })
   }
 
-  async loadHtml() {
+  async loadHtml(): Promise<void> {
     this.debug('loading html')
     this.$ = cheerio.load(await this.page.content())
     this.$('script').remove()
@@ -120,7 +120,7 @@ export class PageController {
     return this.mousePosition
   }
 
-  async mouseMove(position: Position) {
+  async mouseMove(position: Position): Promise<void> {
     await this.page.mouse.move(position.x, position.y)
     this.mousePosition = position
   }

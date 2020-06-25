@@ -28,7 +28,7 @@ export class ActionsController {
     this.handlers.set('write', actions.WriteActionHandler)
   }
 
-  async execute(ctx: Context, actions: Action[]) {
+  async execute(ctx: Context, actions: Action[]): Promise<void> {
     for (const action of actions) {
       this.debug('executing action: %s', action.type)
       const Handler = this.handlers.get(action.type)
