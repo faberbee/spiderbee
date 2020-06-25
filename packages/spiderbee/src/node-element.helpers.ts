@@ -1,3 +1,4 @@
+import cheerio from 'cheerio'
 
 export function walkDOM(node: CheerioElement, func: (node: CheerioElement) => void): void {
   func(node)
