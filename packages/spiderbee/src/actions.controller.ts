@@ -30,14 +30,26 @@ export class ActionsController {
 
   async execute(ctx: Context, actions: Action[]): Promise<void> {
     for (const action of actions) {
-      this.debug('executing action: %s', action.type)
-      const Handler = this.handlers.get(action.type)
-      if (!Handler) {
-        throw new InvalidActionException(action.type)
+      let error: Error = null
+      let errorCounter = 0
+      do {
+        try {
+          this.debug('executing action: %s', action.type)
+          const Handler = this.handlers.get(action.type)
+          if (!Handler) {
+            throw new InvalidActionException(action.type)
+          }
+          const handler = new Handler()
+          await handler.handle(ctx, action)
+          this.debug('completed action: %s', action.type)
+        } catch (e) {
+          error = e
+          errorCounter++
+        }
+      } while (errorCounter > 0 && errorCounter <= 3)
+      if (error && !(action as any).skipIfFails) {
+        throw error
       }
-      const handler = new Handler()
-      await handler.handle(ctx, action)
-      this.debug('completed action: %s', action.type)
     }
   }
 }

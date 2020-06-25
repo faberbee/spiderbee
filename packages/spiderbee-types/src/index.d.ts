@@ -32,6 +32,7 @@ export interface TextAction {
   selector: string
   resultKey: string
   multiple?: boolean
+  skipIfFails?: boolean
 }
 
 export interface LinksAction {
@@ -44,6 +45,7 @@ export interface LinksAction {
     noscript?: boolean
     actions: Action[]
   }
+  skipIfFails?: boolean
 }
 
 export interface LoopAction {
@@ -65,6 +67,7 @@ export interface EachAction {
   resultKey: string
   infinite?: boolean
   actions: EachActionTypeAction[]
+  skipIfFails?: boolean
 }
 
 export interface MouseMoveActionMovement {
@@ -78,6 +81,7 @@ export interface MouseMoveActionMovement {
 export interface MouseMoveActionSelector {
   type: 'mouse_move'
   selector: string
+  skipIfFails?: boolean
 }
 
 export type MouseMoveAction =
@@ -95,12 +99,14 @@ export interface MouseUpAction {
 export interface ClickAction {
   type: 'click'
   selector?: string
+  skipIfFails?: boolean
 }
 
 export interface WriteAction {
   type: 'write'
   selector?: string
   value: string
+  skipIfFails?: boolean
 }
 
 export interface WaitAction {
