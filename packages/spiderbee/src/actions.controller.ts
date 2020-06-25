@@ -30,23 +30,30 @@ export class ActionsController {
 
   async execute(ctx: Context, actions: Action[]): Promise<void> {
     for (const action of actions) {
+      // def error variables
       let error: Error = null
       let errorCounter = 0
+      let maxRetries = ['loop', 'each'].includes(action.type) ? 0 : 3
+      if (action.type === 'links' && action.navigate) {
+        maxRetries = 0
+      } 
+      // getting handler
+      const Handler = this.handlers.get(action.type)
+      if (!Handler) {
+        throw new InvalidActionException(action.type)
+      }
+      const handler = new Handler()
+      // executing action
       do {
         try {
           this.debug('executing action: %s', action.type)
-          const Handler = this.handlers.get(action.type)
-          if (!Handler) {
-            throw new InvalidActionException(action.type)
-          }
-          const handler = new Handler()
           await handler.handle(ctx, action)
           this.debug('completed action: %s', action.type)
         } catch (e) {
           error = e
           errorCounter++
         }
-      } while (errorCounter > 0 && errorCounter <= 3)
+      } while (errorCounter <= maxRetries)
       if (error && !(action as any).skipIfFails) {
         throw error
       }
