@@ -39,7 +39,7 @@ export class LinksActionHandler implements ActionHandler {
     for (let url of urls) {
       const pageUrl = parseUrl(ctx.page.getPage().url())
       if (!parseUrl(url).host) {
-        url = `${pageUrl.protocol}://${pageUrl.host}${url}`
+        url = `${pageUrl.protocol}//${pageUrl.host}${url}`
       }
       await ctx.cluster.execute({
         ...ctx,
