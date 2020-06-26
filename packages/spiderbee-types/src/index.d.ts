@@ -13,6 +13,7 @@ export type Action =
   LinksAction |
   LoopAction |
   EachAction |
+  IfAction |
   MouseMoveAction |
   MouseDownAction |
   MouseUpAction |
@@ -68,6 +69,12 @@ export interface EachAction {
   infinite?: boolean
   actions: EachActionTypeAction[]
   skipIfFails?: boolean
+}
+
+export interface IfAction {
+  type: 'if'
+  selector: string
+  actions: Action[]
 }
 
 export interface MouseMoveActionMovement {
