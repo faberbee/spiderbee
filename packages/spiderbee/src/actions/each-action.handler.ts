@@ -17,7 +17,7 @@ export class EachActionHandler implements ActionHandler {
       const elementsXPathAcc = []
       do {
         // execute
-        await this.execEach(ctx, action, elementsXPath)
+        await this.execEach(ctx, action, elementsXPath, elementsXPathAcc.length)
         // add concat elements to accumulator
         elementsXPathAcc.concat(elementsXPath)
         // find new elements
@@ -27,7 +27,7 @@ export class EachActionHandler implements ActionHandler {
     }
   }
 
-  private async execEach(ctx: Context, action: EachAction, elementsXPath: string[]): Promise<void> {
+  private async execEach(ctx: Context, action: EachAction, elementsXPath: string[], offset = 0): Promise<void> {
     // execute actions for each element
     for (const [index, elementXPath] of elementsXPath.entries()) {
       // add selector and xpath to actions with eachSelector flag
@@ -37,7 +37,7 @@ export class EachActionHandler implements ActionHandler {
       const actionsController = new ActionsController()
       await actionsController.execute({
         ...ctx,
-        namespace: `${ctx.namespace}.${action.resultKey}[${index}]`,
+        namespace: `${ctx.namespace}.${action.resultKey}[${index + offset}]`,
       }, action.actions)
     }
   }
