@@ -11,21 +11,27 @@ npm install --save puppeteer spiderbee
 ## How to use
 
 ```js
-const spiderbee = require('spiderbee')
+const { Spiderbee } = require('spiderbee')
 // this example requires lodash
 const _ = require('lodash')
 
 const result = {}
 
-spiderbee({ /* configuration */ }, function (spider) {
-  spider.on('data', function ({ path, data }) {
-    _.set(result, path.substring(2), data)
+function run() {
+  const spiderbee = await Spiderbee.launch({})
+  
+  await spiderbee.execute({ /* configuration */ }, function (spider) {
+    spider.on('data', function ({ path, data }) {
+      _.set(result, path.substring(2), data)
+    })
+  
+    spider.on('end', function () {
+      console.log(result)
+    })
   })
+}
 
-  spider.on('end', function () {
-    console.log(result)
-  })
-})
+run()
 ```
 
 ## Configuration
@@ -73,6 +79,7 @@ spiderbee({ /* configuration */ }, function (spider) {
 {
   "type": "loop",
   "resultKey": /* output json result key */,
+  "times": /* number of times to execute */,
   "actions": [ /* actions to execute */ ]
 }
 ```
@@ -82,7 +89,8 @@ spiderbee({ /* configuration */ }, function (spider) {
   "type": "each",
   "selector": /* html selector */,
   "resultKey": /* output json result key */,
-  "actions": [ /* actions to execute */ ]
+  "actions": [ /* actions to execute */ ],
+  "infinite": /* use this with infinite scroll */
 }
 ```
 ### Mouse Move action:
