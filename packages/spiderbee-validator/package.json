@@ -1,13 +1,14 @@
 {
-	"name": "spiderbee",
+	"name": "spiderbee-validator",
 	"version": "1.0.0-alpha.11",
-	"description": "Web scraping tool",
+	"description": "Spiderbee validator",
 	"author": "Giacomo Minighin",
 	"license": "MIT",
+	"private": true,
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/faberbee/spiderbee",
-		"directory": "packages/spiderbee"
+		"directory": "packages/spiderbee-validator"
 	},
 	"main": "./lib/index.js",
 	"files": [
@@ -21,13 +22,9 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.10.2",
-		"cheerio": "^1.0.0-rc.3",
 		"debug": "^4.1.1",
-		"puppeteer-cluster": "^0.20.0",
-		"spiderbee-types": "^1.0.0-alpha.11"
-	},
-	"peerDependencies": {
-		"puppeteer": "^2.0.0"
+		"spiderbee-types": "^1.0.0-alpha.11",
+		"validator": "^13.1.1"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.8.3",
@@ -37,19 +34,12 @@
 		"@babel/plugin-transform-runtime": "^7.10.1",
 		"@babel/preset-env": "^7.8.7",
 		"@babel/preset-typescript": "^7.9.0",
-		"@types/cheerio": "^0.22.17",
 		"@types/debug": "0.0.30",
 		"@types/node": "^13.11.1",
-		"@types/puppeteer": "^2.0.1",
-		"lodash": "^4.17.15",
-		"puppeteer": "^2.0.0",
+		"@types/validator": "^13.1.0",
 		"typescript": "^3.8.3"
 	},
 	"keywords": [
-		"spiderbee",
-		"spider",
-		"crawler",
-		"puppeteer",
-		"chromium"
+		"spiderbee"
 	]
 }
