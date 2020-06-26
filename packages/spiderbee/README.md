@@ -21,8 +21,8 @@ function run() {
   const spiderbee = await Spiderbee.launch({})
   
   await spiderbee.execute({ /* configuration */ }, function (spider) {
-    spider.on('data', function ({ path, data }) {
-      _.set(result, path.substring(2), data)
+    spider.on('data', function ({ path, value }) {
+      _.set(result, path.substring(2), value)
     })
   
     spider.on('end', function () {

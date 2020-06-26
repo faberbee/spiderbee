@@ -1,8 +1,10 @@
 import debug from 'debug'
 import { Page, ElementHandle } from 'puppeteer'
+
 import cheerio from 'cheerio'
-import { SpiderEmitter } from './spider.emitter.interface'
 import * as cheerioHelpers from './node-element.helpers'
+
+import { SpiderEmitter } from './spider.emitter.interface'
 
 interface Position {
   x: number;
@@ -15,23 +17,12 @@ export class PageController {
   private url: string
   private page: Page;
   private emitter: SpiderEmitter;
-  private $: CheerioStatic;
   private mousePosition: Position;
 
   constructor(page: Page, emitter: SpiderEmitter) {
     this.page = page
     this.emitter = emitter
     this.mousePosition = { x: 0, y: 0 }
-    setInterval(async () => {
-      if (this.url !== this.page.url()) {
-        this.url = this.page.url()
-        await this.loadHtml()
-        this.emitter.emit('page', {
-          url: this.url,
-          html: this.$.html(),
-        })
-      }
-    }, 3000)
   }
 
   getUrl(): string {
@@ -40,28 +31,17 @@ export class PageController {
 
   async navigate(url: string): Promise<void> {
     this.debug('navigating to %s', url)
-    await this.page.goto(url, { waitUntil: 'networkidle2' })
+    await this.page.goto(url, { timeout: 5000 })
     this.url = this.page.url()
-    await this.loadHtml()
-    this.emitter.emit('page', {
-      url: this.url,
-      html: this.$.html(),
-    })
-  }
-
-  async loadHtml(): Promise<void> {
-    this.debug('loading html')
-    this.$ = cheerio.load(await this.page.content())
-    this.$('script').remove()
   }
 
   async getElement(selector: string): Promise<CheerioElement> {
     const element = await this.getElementHandle(selector)
-    return this.$(await element.evaluate((node) => node.outerHTML)).get(0)
+    return cheerio(await element.evaluate((node) => node.outerHTML)).get(0)
   }
 
   async getElementHtml(selector: string): Promise<string> {
-    return this.$(await this.getElement(selector)).html()
+    return cheerio(await this.getElement(selector)).html()
   }
 
   async getElementText(selector: string): Promise<string> {
@@ -70,7 +50,7 @@ export class PageController {
   }
 
   async getElementAttribute(selector: string, attribute: string): Promise<string> {
-    return this.$(await this.getElement(selector)).attr(attribute)
+    return cheerio(await this.getElement(selector)).attr(attribute)
   }
 
   async getElementCenterPosition(selector: string): Promise<Position> {
@@ -84,12 +64,12 @@ export class PageController {
   }
 
   async getElements(selector: string): Promise<CheerioElement[]> {
-    await this.loadHtml()
-    return this.$(selector).get()
+    const $ = cheerio.load(await this.page.content())
+    return $(selector).get()
   }
 
   async getElementsHtml(selector: string): Promise<string[]> {
-    return (await this.getElements(selector)).map(e => this.$(e).html())
+    return (await this.getElements(selector)).map(e => cheerio(e).html())
   }
 
   async getElementsText(selector: string): Promise<string[]> {
@@ -97,7 +77,7 @@ export class PageController {
   }
 
   async getElementsAttribute(selector: string, attribute: string): Promise<string[]> {
-    return (await this.getElements(selector)).map(e => this.$(e).attr(attribute))
+    return (await this.getElements(selector)).map(e => cheerio(e).attr(attribute))
   }
 
   async getElementsXPath(selector: string): Promise<string[]> {

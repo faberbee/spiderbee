@@ -53,7 +53,7 @@ export class ActionsController {
           error = e
           errorCounter++
         }
-      } while (errorCounter <= maxRetries)
+      } while (errorCounter > 0 && errorCounter <= maxRetries)
       if (error && !(action as any).skipIfFails) {
         throw error
       }
