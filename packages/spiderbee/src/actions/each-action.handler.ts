@@ -14,12 +14,12 @@ export class EachActionHandler implements ActionHandler {
       // get elements xpath
       let elementsXPath = await ctx.page.getElementsXPath(action.selector)
       // elements xpath accumulator
-      const elementsXPathAcc = []
+      let elementsXPathAcc = []
       do {
         // execute
         await this.execEach(ctx, action, elementsXPath, elementsXPathAcc.length)
         // add concat elements to accumulator
-        elementsXPathAcc.concat(elementsXPath)
+        elementsXPathAcc = elementsXPathAcc.concat(elementsXPath)
         // find new elements
         elementsXPath = (await ctx.page.getElementsXPath(action.selector))
           .filter(x => !elementsXPathAcc.includes(x))
