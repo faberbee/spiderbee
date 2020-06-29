@@ -31,7 +31,7 @@ export class PageController {
 
   async navigate(url: string): Promise<void> {
     this.debug('navigating to %s', url)
-    await this.page.goto(url)
+    await this.page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 })
     await this.page.waitFor(3000)
     this.url = this.page.url()
   }
