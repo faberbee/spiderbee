@@ -6,17 +6,6 @@ import { Context } from '../context.interface'
 
 export class LinksActionHandler implements ActionHandler {
   async handle(ctx: Context, action: LinksAction): Promise<void> {
-    if (!action.multiple) {
-      const element = await ctx.page.getElement(action.selector)
-      const urls = this.getLinks(ctx, element, action.regex)
-      ctx.emitter.emit('data', {
-        path: `${ctx.namespace}.${action.resultKey}`,
-        value: urls,
-      })
-      if (action.navigate) {
-        await this.navigateUrls(ctx, urls, action.navigate)
-      }
-    } else {
       const elements = await ctx.page.getElements(action.selector)
       for (const [index, element] of elements.entries()) {
         const urls = this.getLinks(ctx, element, action.regex)
@@ -28,7 +17,6 @@ export class LinksActionHandler implements ActionHandler {
           await this.navigateUrls(ctx, urls, action.navigate)
         }
       }
-    }
   }
 
   private getLinks(ctx: Context, element: CheerioElement, regex?: string) {
