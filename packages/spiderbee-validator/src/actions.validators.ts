@@ -1,5 +1,5 @@
 import { ClickAction, EachAction, IfAction, LinksAction, LoopAction, MouseDownAction, MouseMoveActionSelector, MouseMoveActionMovement, MouseUpAction, TextAction, UrlAction, WaitAction, WriteAction, ScrollAction, FormAction } from 'spiderbee-types'
-import { IsIn, IsOptional, IsString, IsBoolean, ValidateNested, IsInt, Min, Max } from 'class-validator'
+import { IsIn, IsOptional, IsString, IsBoolean, ValidateNested, IsInt, Min, Max, ValidateIf } from 'class-validator'
 import { Type } from 'class-transformer'
 
 export abstract class BaseActionValidator {
@@ -159,9 +159,11 @@ export class IfActionValidator extends BaseActionValidator implements IfAction {
 export class MouseMoveActionValidator extends BaseActionValidator implements MouseMoveActionSelector, MouseMoveActionMovement {
   type: 'mouse_move';
 
+  @ValidateIf(o => o.movement === undefined)
   @IsString()
   selector: string;
 
+  @ValidateIf(o => o.selector === undefined)
   @ValidateNested()
   movement: MovementValidator;
 
