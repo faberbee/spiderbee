@@ -8,7 +8,7 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "build": "lerna run --parallel build",
+    "build": "lerna run build",
     "clean:modules": "lerna clean",
     "clean:lib": "lerna exec -- rimraf lib",
     "clean:dist": "lerna exec -- rimraf dist",

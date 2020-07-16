@@ -1,5 +1,5 @@
 import { Config } from 'spiderbee-types'
-import { IsOptional, IsString, IsUrl, IsBoolean, ValidateNested } from 'class-validator'
+import { IsOptional, IsString, IsUrl, IsBoolean, ValidateNested, ArrayNotEmpty } from 'class-validator'
 import { ActionValidatorType, TypeAction } from './actions.validators'
 
 export class ConfigValidator implements Config {
@@ -14,6 +14,7 @@ export class ConfigValidator implements Config {
   @IsBoolean()
   noscript?: boolean;
 
+  @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @TypeAction()
   actions: ActionValidatorType[];

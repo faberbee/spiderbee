@@ -24,7 +24,8 @@
 		"cheerio": "^1.0.0-rc.3",
 		"debug": "^4.1.1",
 		"puppeteer-cluster": "^0.20.0",
-		"spiderbee-types": "^1.0.0-alpha.11"
+		"spiderbee-types": "^1.0.0-alpha.11",
+		"spiderbee-validator": "^1.0.0-alpha.11"
 	},
 	"peerDependencies": {
 		"puppeteer": "^2.0.0"
