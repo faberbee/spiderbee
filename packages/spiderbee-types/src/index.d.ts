@@ -32,7 +32,6 @@ export interface TextAction {
   type: 'text'
   selector: string
   resultKey: string
-  multiple?: boolean
   skipIfFails?: boolean
 }
 
@@ -40,7 +39,6 @@ export interface LinksAction {
   type: 'links'
   selector: string
   resultKey: string
-  multiple?: boolean
   regex?: string
   navigate?: {
     noscript?: boolean

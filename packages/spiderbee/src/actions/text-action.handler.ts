@@ -4,25 +4,15 @@ import { Context } from '../context.interface'
 
 export class TextActionHandler implements ActionHandler {
   async handle(ctx: Context, action: TextAction): Promise<void> {
-    if (!action.multiple) {
-      // get element text
-      const elementText = await ctx.page.getElementText(action.selector)
-      // emit event
+    // get elements html
+    const elementsText = await ctx.page.getElementsText(action.selector)
+    // aggregate text
+    const aggregateText = elementsText.reduce((acc, val) => acc += val, '')
       ctx.emitter.emit('data', {
         path: `${ctx.namespace}.${action.resultKey}`,
-        value: elementText,
+        value: aggregateText,
       })
-    } else {
-      // get elements html
-      const elementsText = await ctx.page.getElementsText(action.selector)
-      // for each html element
-      for (const [index, elementText] of elementsText.entries()) {
-        // emit event
-        ctx.emitter.emit('data', {
-          path: `${ctx.namespace}.${action.resultKey}[${index}]`,
-          value: elementText,
-        })
-      }
-    }
+    
+    console.log('aggregateText => ', aggregateText)
   }
 }

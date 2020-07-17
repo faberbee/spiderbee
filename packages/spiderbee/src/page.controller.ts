@@ -65,8 +65,12 @@ export class PageController {
   }
 
   async getElements(selector: string): Promise<CheerioElement[]> {
-    const $ = cheerio.load(await this.page.content())
-    return $(selector).get()
+    const elements = await this.getElementsHandle(selector)
+    const elementsHtml = await Promise.all(elements.map(e => e.evaluate((node) => node.outerHTML)))
+
+    console.log(elements)
+    console.log(elementsHtml)
+    return elementsHtml.map(e => cheerio(e).get(0))
   }
 
   async getElementsHtml(selector: string): Promise<string[]> {
@@ -91,6 +95,19 @@ export class PageController {
     return xpath ?
       await this.page.waitForXPath(selector, { visible: true }) :
       await this.page.waitForSelector(selector, { visible: true })
+  }
+
+  async getElementsHandle(selector: string): Promise<ElementHandle[]> {
+    const xpath = cheerioHelpers.isXPath(selector)
+    this.debug('getting element handle %s xpath: %s', selector, xpath)
+    if (xpath) {
+      await this.page.waitForXPath(selector, { visible: true })
+    } else {
+      await this.page.waitForSelector(selector, { visible: true })
+    }
+    return xpath ?
+      await this.page.$x(selector) :
+      await this.page.$$(selector)
   }
 
   getPage(): Page {
