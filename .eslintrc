@@ -26,6 +26,9 @@
     ],
     "no-undef": [
       "off"
+    ],
+    "prefer-const": [
+      "warn"
     ]
   }
 }
