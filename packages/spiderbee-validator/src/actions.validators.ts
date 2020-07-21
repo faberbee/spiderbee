@@ -64,10 +64,6 @@ export class TextActionValidator extends BaseActionValidator implements TextActi
 
   @IsOptional()
   @IsBoolean()
-  multiple?: boolean;
-
-  @IsOptional()
-  @IsBoolean()
   skipIfFails?: boolean;
 }
 
@@ -79,10 +75,6 @@ export class LinksActionValidator extends BaseActionValidator implements LinksAc
 
   @IsString()
   resultKey: string;
-
-  @IsOptional()
-  @IsString()
-  multiple?: boolean;
 
   @IsOptional()
   @IsString()
