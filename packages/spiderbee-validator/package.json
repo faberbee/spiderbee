@@ -1,6 +1,6 @@
 {
 	"name": "spiderbee-validator",
-	"version": "1.0.0-alpha.11",
+	"version": "1.0.0-alpha.14",
 	"description": "Spiderbee validator",
 	"author": "Giacomo Minighin",
 	"license": "MIT",
@@ -23,7 +23,7 @@
 	"dependencies": {
 		"@babel/runtime": "^7.10.2",
 		"debug": "^4.1.1",
-		"spiderbee-types": "^1.0.0-alpha.11",
+		"spiderbee-types": "^1.0.0-alpha.14",
 		"validator": "^13.1.1"
 	},
 	"devDependencies": {
