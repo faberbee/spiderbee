@@ -67,9 +67,6 @@ export class PageController {
   async getElements(selector: string): Promise<CheerioElement[]> {
     const elements = await this.getElementsHandle(selector)
     const elementsHtml = await Promise.all(elements.map(e => e.evaluate((node) => node.outerHTML)))
-
-    console.log(elements)
-    console.log(elementsHtml)
     return elementsHtml.map(e => cheerio(e).get(0))
   }
 
