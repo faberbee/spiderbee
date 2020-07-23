@@ -4,6 +4,7 @@ import { createHash } from 'crypto'
 import { Cluster } from 'puppeteer-cluster'
 import { LaunchOptions } from 'puppeteer'
 import { Config } from 'spiderbee-types'
+import { validate } from 'spiderbee-validator'
 import { Context } from './context.interface'
 import { ActionsController } from './actions.controller'
 import { ClusterJobData } from './cluster-job-data.interface'
@@ -87,6 +88,12 @@ export class Spiderbee extends EventEmitter {
   }
 
   async execute(config: Config, callback: (spider: SpiderEmitter, id: string) => void): Promise<void> {
+    // validate config
+    const errors = await validate(config)
+    if (errors.length > 0) {
+      throw errors
+    }
+    // initialize
     const id = config.id ? config.id : createId(config)
     const emitter = new EventEmitter()
     // creating the job
