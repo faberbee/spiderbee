@@ -26,9 +26,18 @@ export function getText(element: CheerioElement): string {
   return txtElms.join(' \n\n ')
 }
 
+function linkTargetChecker(node: CheerioElement): boolean {
+  const hrefTarget = ['[href^="/"]', '[href^=".."]', '[href^="http://"]', '[href^="https://"]']
+  const $ = cheerio.load(node)
+
+  for (const target in hrefTarget) return ($('a').is(target)) ? true : false
+}
+
 export function linksDOM(node: CheerioElement): string[] {
   const $ = cheerio.load(node)
-  return $('a').get().map(e => $(e).attr('href'))
+  if (linkTargetChecker(node)) {
+    return $('a').get().map(e => $(e).attr('href'))
+  }
 }
 
 export function isXPath(selector: string): boolean {
