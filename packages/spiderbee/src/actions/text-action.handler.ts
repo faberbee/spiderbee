@@ -12,7 +12,5 @@ export class TextActionHandler implements ActionHandler {
         path: `${ctx.namespace}.${action.resultKey}`,
         value: aggregateText,
       })
-    
-    console.log('aggregateText => ', aggregateText)
   }
 }

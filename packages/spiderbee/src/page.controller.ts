@@ -67,9 +67,6 @@ export class PageController {
   async getElements(selector: string): Promise<CheerioElement[]> {
     const elements = await this.getElementsHandle(selector)
     const elementsHtml = await Promise.all(elements.map(e => e.evaluate((node) => node.outerHTML)))
-
-    console.log(elements)
-    console.log(elementsHtml)
     return elementsHtml.map(e => cheerio(e).get(0))
   }
 
@@ -99,7 +96,7 @@ export class PageController {
 
   async getElementsHandle(selector: string): Promise<ElementHandle[]> {
     const xpath = cheerioHelpers.isXPath(selector)
-    this.debug('getting element handle %s xpath: %s', selector, xpath)
+    this.debug('getting elements handle %s xpath: %s', selector, xpath)
     if (xpath) {
       await this.page.waitForXPath(selector, { visible: true })
     } else {
