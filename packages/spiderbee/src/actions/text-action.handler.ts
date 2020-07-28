@@ -7,10 +7,11 @@ export class TextActionHandler implements ActionHandler {
     // get elements html
     const elementsText = await ctx.page.getElementsText(action.selector)
     // aggregate text
-    const aggregateText = elementsText.reduce((acc, val) => acc += val, '')
-      ctx.emitter.emit('data', {
-        path: `${ctx.namespace}.${action.resultKey}`,
-        value: aggregateText,
-      })
+    const aggregateText = elementsText.join(' \n\n ')
+    // emit data
+    ctx.emitter.emit('data', {
+      path: `${ctx.namespace}.${action.resultKey}`,
+      value: aggregateText,
+    })
   }
 }
