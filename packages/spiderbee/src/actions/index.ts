@@ -1,6 +1,7 @@
 export * from './click-action.handler'
 export * from './each-action.handler'
 export * from './form-action.handler'
+export * from './if-action.handler'
 export * from './loop-action.handler'
 export * from './mouse-down-action.handler'
 export * from './mouse-move-action.handler'

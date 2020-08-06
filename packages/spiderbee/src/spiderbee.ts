@@ -69,6 +69,7 @@ export class Spiderbee extends EventEmitter {
         // emit error
         emitter.emit('error', e)
         this.debug(`failed job: ${id}`)
+        this.debug(JSON.stringify(e, null, 2))
       } finally {
         this.jobs.delete(id)
         done()

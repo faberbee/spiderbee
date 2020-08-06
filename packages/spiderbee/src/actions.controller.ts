@@ -16,6 +16,7 @@ export class ActionsController {
     this.handlers.set('click', actions.ClickActionHandler)
     this.handlers.set('each', actions.EachActionHandler)
     this.handlers.set('form', actions.FormActionHandler)
+    this.handlers.set('if', actions.IfActionHandler)
     this.handlers.set('links', actions.LinksActionHandler)
     this.handlers.set('loop', actions.LoopActionHandler)
     this.handlers.set('mouse_down', actions.MouseDownActionHandler)
