@@ -119,4 +119,26 @@ export class PageController {
     await this.page.mouse.move(position.x, position.y)
     this.mousePosition = position
   }
+
+  async scrollElement(selector: string) {
+    const element = await this.getElementHandle(selector)
+    const scrollFunc = (node: Element) => {
+      return new Promise(resolve => {
+        // keep scrolling
+        let scrollTimeout: NodeJS.Timeout
+        document.addEventListener('scroll', function () {
+          clearTimeout(scrollTimeout)
+          scrollTimeout = setTimeout(function () {
+            resolve()
+          }, 100)
+        })
+        // scroll function
+        node.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end'
+        })
+      })
+    }
+    return element.evaluate(scrollFunc)
+  }
 }
