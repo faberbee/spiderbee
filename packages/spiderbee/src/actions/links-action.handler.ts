@@ -1,4 +1,4 @@
-import { parse as parseUrl } from 'url'
+import { parse as parseUrl, URL } from 'url'
 import { LinksAction, Action } from 'spiderbee-types'
 import { ActionHandler } from '../action.handler.interface'
 import * as cheerioHelpers from '../node-element.helpers'
@@ -11,14 +11,10 @@ export class LinksActionHandler implements ActionHandler {
     const elements = await ctx.page.getElements(action.selector)
     // get url from elements
     const urls = elements.map(e => this.getLinks(ctx, e, action.regex)).reduce((acc, val) => acc.concat(val), [])
-    // iterate urls
-    for (let [index, url] of urls.entries()) {
-      if (action.navigate) {
-        // check relative urls
-        if (!parseUrl(url).host) {
-          const pageUrl = parseUrl(ctx.page.getPage().url())
-          url = `${pageUrl.protocol}//${pageUrl.host}${url}`
-        }
+    // if should navigate
+    if (action.navigate) {
+      // iterate urls
+      for (const [index, url] of urls.entries()) {
         // navigate
         await ctx.cluster.execute({
           ...ctx,
@@ -26,10 +22,24 @@ export class LinksActionHandler implements ActionHandler {
           config: { ...action.navigate, url },
         })
       }
+    } else {
+      ctx.emitter.emit('data', {
+        path: `${ctx.namespace}.${action.resultKey}`,
+        value: urls
+      })
     }
   }
 
   private getLinks(ctx: Context, element: CheerioElement, regex?: string) {
-    return [...new Set(cheerioHelpers.linksDOM(element).filter(u => regex ? new RegExp(regex).test(u) : u))]
+    // get unique dom urls
+    let urls = cheerioHelpers.linksDOM(element)
+    urls = [... new Set(urls)]
+    // filter urls by regex
+    urls = urls.filter(x => regex ? new RegExp(regex).test(x) : x)
+    // remove relative urls
+    const { protocol, host } = parseUrl(ctx.page.getUrl())
+    urls = urls.map(x => parseUrl(x).host ? new URL(x, `${protocol}//${host}`).toString() : x)
+    // return
+    return urls
   }
 }
