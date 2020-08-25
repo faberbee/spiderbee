@@ -38,7 +38,7 @@ export class LinksActionHandler implements ActionHandler {
     urls = urls.filter(x => regex ? new RegExp(regex).test(x) : x)
     // remove relative urls
     const { protocol, host } = parseUrl(ctx.page.getUrl())
-    urls = urls.map(x => parseUrl(x).host ? new URL(x, `${protocol}//${host}`).toString() : x)
+    urls = urls.map(x => parseUrl(x).host ? x : new URL(x, `${protocol}//${host}`).toString())
     // return
     return urls
   }
