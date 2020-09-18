@@ -10,7 +10,7 @@ export function walkDOM(node: CheerioElement, func: (node: CheerioElement) => vo
 }
 
 export function isTextNode(node: CheerioElement): boolean {
-  return node.type === 'text' && !(/script|style/.test(node.parentNode.tagName))
+  return node.type === 'text' && (node.parentNode && !(/script|style/.test(node.parentNode.tagName)))
 }
 
 export function getText(element: CheerioElement): string {
