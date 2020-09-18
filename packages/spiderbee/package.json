@@ -1,6 +1,6 @@
 {
 	"name": "spiderbee",
-	"version": "1.0.0-alpha.20",
+	"version": "1.0.0-alpha.21",
 	"description": "Web scraping tool",
 	"author": "Giacomo Minighin",
 	"license": "MIT",
@@ -25,7 +25,7 @@
 		"debug": "^4.1.1",
 		"puppeteer-cluster": "^0.20.0",
 		"spiderbee-types": "^1.0.0-alpha.14",
-		"spiderbee-validator": "^1.0.0-alpha.19"
+		"spiderbee-validator": "^1.0.0-alpha.21"
 	},
 	"peerDependencies": {
 		"puppeteer": "^2.0.0"
