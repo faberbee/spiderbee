@@ -22,7 +22,7 @@
 	"dependencies": {
 		"@babel/runtime": "^7.10.2",
 		"class-transformer": "^0.3.1",
-		"class-validator": "^0.12.2",
+		"class-validator": "^0.14.0",
 		"debug": "^4.1.1",
 		"reflect-metadata": "^0.1.13",
 		"spiderbee-types": "^1.0.0-alpha.14"
